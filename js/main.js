@@ -10,7 +10,6 @@ for ( let i = 0; i < (arr.length); i++) {
 }
 
 //Пункт 2
-let primeArr = [];
 
 //Проверяем числа от 1 до 100.
 for (let num = 1; num <= 100; num++) {
@@ -25,13 +24,11 @@ for (let num = 1; num <= 100; num++) {
         if (div === num) {
             // а без остатка поделилось лишь 2 раза (на себя и на 1),
             if (count === 2) {
-                //то записываем простое число.
-                primeArr.push(num);
+                //то выводим простое число.
+                console.log('Простое число: ' + num + ', его делители: 1 и ' + num);
             }
         }
     }
 }
-
-console.log(primeArr);
 
 

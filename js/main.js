@@ -7,7 +7,7 @@ function doJS(glo){
     else {
         glo = glo.trim();
         if (glo.length > 30) {
-            return glo.substring(0, 3) + '...';
+            return glo.substring(0, 30) + '...';
         }
         else {
             return glo;

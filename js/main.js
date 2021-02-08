@@ -7,34 +7,35 @@ let date = new Date();
 
 function getDayOfWeek(today){
     // Приводим в соответствие российский порядок дней в неделе с используемым в js
-    if (today === 0) {
-        today = 6;
-    }
-    else {
-        today -= 1;
-    }
+    today = (today === 0) ? 6 : today - 1;
     // Перебор дней в неделе
     for (let day in week) {
+        let p = document.createElement('p');
+        p.innerHTML = week[day];        
         // Если выходной, то
         if (+day === 5 || +day === 6) {
+            p.className = 'weekend';
             // Если сегодня один из выходных
             if (+day === today) {
-                console.log('%c%s', 'font-style: italic; font-weight: bold;', week[day]);
+                p.classList.add('this-day');
+                document.body.append(p);
+
             }
             // Если выходной не сегодня
             else {
-                console.log('%c%s', 'font-style: italic;', week[day]);
+                document.body.append(p);
             }
         }
         // Если будний день
         else {
             // Если сегодня будний день
             if (+day === today) {
-                console.log('%c%s', 'font-weight: bold;', week[day]);
+                p.classList.add('this-day');
+                document.body.append(p);
             }
             // Если будний день не сегодня
             else {
-                console.log(week[day]);
+                document.body.append(p);
             }
         }
     }

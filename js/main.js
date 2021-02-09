@@ -12,6 +12,7 @@ let additionalIncomeValue = document.getElementsByClassName('additional_income-v
 let additionalExpensesValue = document.getElementsByClassName('additional_expenses-value');
 let incomePeriodValue = document.getElementsByClassName('income_period-value');
 let targetMonthValue = document.getElementsByClassName('target_month-value');
+let budgetMonthValue = document.querySelector('.budget_mount_value');
 let salaryAmount = document.querySelector('.salary-amount');
 let incomeTitle = document.querySelector('input.income-title');
 let incomeAmount = document.querySelector('.income-amount');
@@ -32,6 +33,7 @@ console.log(additionalIncomeValue);
 console.log(additionalExpensesValue);
 console.log(incomePeriodValue);
 console.log(targetMonthValue);
+console.log(budgetMonthValue);
 console.log(salaryAmount);
 console.log(incomeTitle);
 console.log(incomeAmount);

@@ -9,9 +9,9 @@ let dateObj = {
     minText: '',
     secText: '',
     // Текст для первой строки
-    content1: '',
+    fullDate: '',
     // Текст для второй строки
-    content2: '',
+    shortDate: '',
     allMonths: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
     dayOfTheWeek: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
     // Получаем корректное название времени
@@ -48,19 +48,19 @@ let dateObj = {
         let textCore = 'Сегодня ' + dateObj.dayOfTheWeek[dateObj.date.getDay()] + ', ' + dateObj.date.getDate() + ' ' + dateObj.allMonths[dateObj.date.getMonth()] + ' ' + dateObj.date.getFullYear() + ' года, ' + dateObj.hourValue + ' ' + dateObj.hourText;
         let textMinutes = ' ' + dateObj.minValue +' ' + dateObj.minText;
         let textSeconds = ' ' + dateObj.secValue + ' ' + dateObj.secText;
-        dateObj.content1 = textCore;
+        dateObj.fullDate = textCore;
         if (dateObj.minValue !== 0) {
-            dateObj.content1 += textMinutes;
+            dateObj.fullDate += textMinutes;
         }
         if (dateObj.secValue !== 0) {
-            dateObj.content1 += textSeconds;
+            dateObj.fullDate += textSeconds;
         }
 
         // Добавляем ноль перед числом при необходимости
         function addZero(num){
             return (num >= 0 && num <=9) ? '0' + num : num;
         }
-        dateObj.content2 = addZero(dateObj.date.getDay()) + '.' + addZero(dateObj.date.getMonth()) + '.' + dateObj.date.getFullYear() + ' - ' + addZero(dateObj.hourValue) + ':' + addZero(dateObj.minValue) + ':' + addZero(dateObj.secValue);
+        dateObj.shortDate = addZero(dateObj.date.getDate()) + '.' + addZero(dateObj.date.getMonth() + 1) + '.' + dateObj.date.getFullYear() + ' - ' + addZero(dateObj.hourValue) + ':' + addZero(dateObj.minValue) + ':' + addZero(dateObj.secValue);
 
     },
     // Добавляем строки на страницу
@@ -68,8 +68,8 @@ let dateObj = {
         let p1 = document.createElement('p');
         let p2 = document.createElement('p');
         dateObj.getContent();
-        p1.innerHTML = dateObj.content1;
-        p2.innerHTML = dateObj.content2;
+        p1.innerHTML = dateObj.fullDate;
+        p2.innerHTML = dateObj.shortDate;
         document.body.append(p1);
         document.body.append(p2);
     }
@@ -80,6 +80,6 @@ let start = setInterval(function(){
     // Получаем актуальное время
     dateObj.getContent();
     // Обновляем содержимое строк
-    document.getElementsByTagName('p')[0].innerText = dateObj.content1;
-    document.getElementsByTagName('p')[1].innerText = dateObj.content2;
+    document.getElementsByTagName('p')[0].innerText = dateObj.fullDate;
+    document.getElementsByTagName('p')[1].innerText = dateObj.shortDate;
 }, 1000);

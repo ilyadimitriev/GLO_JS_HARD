@@ -18,22 +18,16 @@ const expensesTitle = document.querySelector('input.expenses-title');
 const expensesAmount = document.querySelector('.expenses-amount');
 let expensesItems = document.querySelectorAll('.expenses-items');
 let incomeItems = document.querySelectorAll('.income-items');
-const addlExpensesItem = document.querySelector('.additional_expenses-item');
+const addExpensesItem = document.querySelector('.additional_expenses-item');
 const targetAmount = document.querySelector('.target-amount');
 const periodSelect = document.querySelector('.period-select');
 
 function isNumber(num) {
-    if (!isNaN(num) && !isNaN(parseFloat(num)) && (isFinite(num))) {
-        return true;
-    }
-    else {
-        alert('В поля "Сумма" вводите только числа!');
-        return false;
-    }
+    num.value = num.value.replace(/[^\d]/g, '');
 }
 
 function isRussian(str) {
-    return (isNaN(Number(str))) ? true : false;
+    str.value = str.value.replace(/[^а-яА-ЯёЁ !?.,:;"']/g, '');
 }
 
 let appData = {
@@ -86,7 +80,7 @@ let appData = {
     },
     getAddExpenses: function(){
         appData.addExpenses = [];
-        let addExpenses = addlExpensesItem.value.split(',');
+        let addExpenses = addExpensesItem.value.split(',');
         addExpenses.forEach(function(item){
             item = item.trim();
             if (item !== ''){
@@ -209,9 +203,22 @@ calc.addEventListener('click', function(){
     }
     appData.start();
 });
+
 plusAddExpenses.addEventListener('click', appData.addExpensesBlock);
 plusAddIncome.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', function(){
     appData.period = +periodSelect.value;
     document.querySelector('.period-amount').textContent = periodSelect.value;
+});
+document.querySelector('.data').querySelectorAll('input').forEach(function(item){
+    if (item.getAttribute('placeholder') === 'Сумма') {
+        item.addEventListener('keyup', function(){
+            isNumber(item);
+        });
+    }
+    if (item.getAttribute('placeholder') === 'Наименование') {
+        item.addEventListener('keyup', function(){
+            isRussian(item);
+        });
+    }
 });

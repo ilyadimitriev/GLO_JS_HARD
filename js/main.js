@@ -91,13 +91,6 @@ class AppData {
             alert(`Введите корректное значение в поле "Процент"`);
             return;
         }
-        document.querySelectorAll(`.data input`).forEach(function(item){
-            if(item.getAttribute(`type`) === `text`) {
-                item.disabled = true;
-            }
-        });
-        calc.style.display = `none`;
-        cancel.style.display = `block`;
         this.budget = +salaryAmount.value;
         this.getExpInc();
         this.getMonthSum();
@@ -106,9 +99,17 @@ class AppData {
         this.getBudget();
         this.getTargetMonth();
         this.period = +periodSelect.value;
+        this.saveProgram();
         this.showResult();
     }
     reset() {
+        localStorage.clear(`data`);
+        for (let item in this) {
+            if ( this.getCookie(item) !== undefined){
+                this.deleteCookie(item);
+            }
+        }
+        this.deleteCookie(`isLoad`);
         document.querySelectorAll(`.data input`).forEach(function(item){
             if(item.getAttribute(`type`) === `text`) {
                 item.disabled = false;
@@ -134,6 +135,13 @@ class AppData {
         this.resetResult();
     }
     showResult(){
+        document.querySelectorAll(`.data input`).forEach(function(item){
+            if(item.getAttribute(`type`) === `text`) {
+                item.disabled = true;
+            }
+        });
+        calc.style.display = `none`;
+        cancel.style.display = `block`;
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
         expensesMonthValue.value = this.expensesMonth;
@@ -180,6 +188,39 @@ class AppData {
         depositBank.querySelector(`option`).setAttribute(`selected`, `selected`);
         depositAmount.style.display = `none`;
         depositPercent.style.display = `none`;
+    }
+    saveProgram(){
+        const progData = JSON.stringify(this);
+        localStorage.setItem(`data`, progData);
+        for(let item in this) {
+            const itemValue = this[item];
+            const jsonItem = JSON.stringify(itemValue);
+            document.cookie = encodeURIComponent(item) + `=` + encodeURIComponent(jsonItem) + `; max-age=180000`;
+        }
+    }
+    loadProgram(){
+        const progData = JSON.parse(localStorage.getItem(`data`));
+        let status = true;
+        for (let item in progData) {
+            if (JSON.stringify(progData[item]) !== this.getCookie(item)) {
+                console.log(`Не совпало`);
+                document.cookie = `isLoad = false; max-age=180000`;
+                status = false;
+                alert(`При загрузке данных прошлой сессии произошла ошибка. Данные будут удалены`);
+                break;
+            }
+        }
+        if (status) {
+            document.cookie = `isLoad = true; max-age=180000`;
+        }
+        if (this.getCookie(`isLoad`) === 'true') {
+            for (let item in progData) {
+                this[item] = progData[item];
+            }
+            this.showResult();
+        } else {
+            this.reset();
+        }
     }
     getAddExpInc(){
         const getAdd = type => {
@@ -310,6 +351,33 @@ class AppData {
     calcSavedMoney(){
         return this.budgetMonth * this.period;
     }
+    getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    setCookie(name, value, options = {}) {
+        if (options.expires instanceof Date) {
+            options.expires = options.expires.toUTCString();
+        }
+        
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        
+        for (let optionKey in options) {
+            updatedCookie += "; " + optionKey;
+            let optionValue = options[optionKey];
+            if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+            }
+        }
+        document.cookie = updatedCookie;
+    }
+    deleteCookie(name) {
+        this.setCookie(name, "", {
+          'max-age': -1
+        });
+    }
 }
 
 
@@ -318,3 +386,6 @@ class AppData {
 
 const appData = new AppData();
 appData.eventListeners();
+if(localStorage.getItem('data') !== null) {
+    appData.loadProgram();
+}

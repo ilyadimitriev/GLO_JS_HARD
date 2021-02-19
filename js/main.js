@@ -1,8 +1,8 @@
 'use strict';
 const calc = document.getElementById(`start`);
 const cancel = document.getElementById(`cancel`);
-const plusAddIncome = document.getElementsByTagName(`button`)[0];
-const plusAddExpenses = document.getElementsByTagName(`button`)[1];
+let plusAddIncome = document.querySelector(`.income_add`);
+let plusAddExpenses = document.querySelector(`.expenses_add`);
 const depositCheck = document.querySelector(`#deposit-check`);
 const depositBank = document.querySelector(`.deposit-bank`);
 const depositAmount = document.querySelector(`.deposit-amount`);
@@ -157,6 +157,7 @@ class AppData {
         incomeItems = document.querySelectorAll(`.income-items`);
         if (expensesItems.length === 3) {
            document.querySelector(`.expenses`).insertAdjacentHTML(`beforeend`, `<button class="btn_plus expenses_add">+</button>`);
+            plusAddExpenses = document.querySelector(`.expenses_add`);
            plusAddExpenses.addEventListener(`click`, event =>{
             this.addBlock.call(this, event);
         });
@@ -166,6 +167,7 @@ class AppData {
         }
         if (incomeItems.length === 3) {
             document.querySelector(`.income`).insertAdjacentHTML(`beforeend`, `<button class="btn_plus income_add">+</button>`);
+            plusAddIncome = document.querySelector(`.income_add`);
             plusAddIncome.addEventListener(`click`, event =>{
             this.addBlock.call(this, event);
         });
@@ -229,6 +231,8 @@ class AppData {
                 this[startStr][itemTitle] = +itemhAmount;
             }
         };
+        expensesItems = document.querySelectorAll(`.expenses-items`);
+        incomeItems = document.querySelectorAll(`.income-items`);
         incomeItems.forEach(count);
         expensesItems.forEach(count);    
     }
@@ -302,18 +306,6 @@ class AppData {
             this.percentDeposit = depositPercent.value;
             this.moneyDeposit = depositAmount.value;
         }
-        // if(this.deposit){
-        //     let percent;
-        //     let cash;
-        //     do {
-        //         percent = prompt(`Какой годовой процент?`, 8);
-        //     } while (!this.forbit(percent, `num`));
-        //     this.percentDeposit = percent;
-        //     do {
-        //         cash = prompt(`Какая сумма заложена?`, 12000);
-        //     } while (!this.forbit(cash, `num`));
-        //     this.moneyDeposit = cash;
-        // }
     }
     calcSavedMoney(){
         return this.budgetMonth * this.period;

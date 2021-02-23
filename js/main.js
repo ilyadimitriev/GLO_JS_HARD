@@ -9,6 +9,7 @@ function countTimer(deadline) {
 		timerMinutes = document.querySelector(`#timer-minutes`),
 		timerSeconds = document.querySelector(`#timer-seconds`);
 	let timer = getTimeRemaining();
+	let idInterval;
 
 	function addZeros(num) {
 		num = num.toString();
@@ -18,7 +19,7 @@ function countTimer(deadline) {
 	function getTimeRemaining() {
 		const dateStop = new Date(deadline).getTime(),
 			dateNow = new Date().getTime(),
-			timeRemaining = (dateStop - dateNow) / 1000,
+			timeRemaining = Math.ceil((dateStop - dateNow) / 1000),
 			seconds = addZeros(Math.floor(timeRemaining % 60)),
 			minutes = addZeros(Math.floor((timeRemaining / 60) % 60)),
 			hours = addZeros(Math.floor(timeRemaining / 60 / 60));
@@ -27,12 +28,17 @@ function countTimer(deadline) {
 
 	function updateClock() {
 		timer = getTimeRemaining();
+		console.log(timer.timeRemaining);
 		timerHours.textContent = timer.hours;
 		timerMinutes.textContent = timer.minutes;
 		timerSeconds.textContent = timer.seconds;
+		if (timer.timeRemaining <= 0) {
+			clearInterval(idInterval);
+		}
 	}
 	if (timer.timeRemaining > 0) {
-		setInterval(updateClock, 1000);
+		updateClock();
+		idInterval = setInterval(updateClock, 1000);
 	} else {
 		timerHours.textContent = `00`;
 		timerMinutes.textContent = `00`;
@@ -40,7 +46,7 @@ function countTimer(deadline) {
 	}
 }
 
-const deadline = new Date().getTime() + 23000000;
+const deadline = new Date().getTime() + 5000;
 countTimer(deadline);
 
 });

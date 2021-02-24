@@ -49,32 +49,21 @@ const deadline = new Date().getTime() + 52342000;
 countTimer(deadline);
 
 const toggleMenu = () => {
-	let preventDocEvent = true;
-	const btnMenu = document.querySelector(`.menu`),
-		menu = document.querySelector(`menu`);
+	const menu = document.querySelector(`menu`);
 
-	const closeMenu = event => {
-		if (preventDocEvent) {
-			preventDocEvent = false;
-			return;
-		}
-		const target = event.target.closest(`.active-menu`);
-		if (!target || event.target.matches(`.active-menu a`)) {
-			menu.classList.toggle(`active-menu`);
-			btnMenu.style.display = `block`;
-			preventDocEvent = true;
-			document.removeEventListener(`click`, closeMenu);
-		}
-	};
-
-	const handlerMenu = () => {
-		menu.classList.toggle(`active-menu`);
+	document.addEventListener(`click`, event => {
+		let target = event.target.closest(`.active-menu`);
 		if (menu.classList.contains(`active-menu`)) {
-		btnMenu.style.display = `none`;
-			document.addEventListener(`click`, closeMenu);
+			if (!target || event.target.matches(`.active-menu a`)) {
+				menu.classList.toggle(`active-menu`);
+			}
+		} else {
+			target = event.target.closest(`.menu`);
+			if (target) {
+				menu.classList.toggle(`active-menu`);
+			}
 		}
-	};
-	btnMenu.addEventListener(`click`, handlerMenu);
+	});
 };
 
 toggleMenu();

@@ -1,0 +1,38 @@
+.round {
+	position: absolute;
+	top: 50%;
+	left:  50%;
+	transform: translateY(-50%) translateX(-50%);
+	background: #000;
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+
+.active-round {
+	width: 150px;
+    height: 40px;
+	margin: 10vh auto 0;
+	display: block;
+    color: white;
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+	background-color: black;
+}
+
+.reset {
+	width: 150px;
+    height: 40px;
+	margin: 1vh auto 0;
+	display: block;
+    color: rgb(0, 0, 0);
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+	background-color: rgb(212, 211, 211);
+}

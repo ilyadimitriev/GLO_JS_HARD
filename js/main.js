@@ -58,7 +58,8 @@ const toggleMenu = () => {
 			preventDocEvent = false;
 			return;
 		}
-		if (!event.target.matches('.active-menu, .active-menu *') || event.target.matches('.close-btn')) {
+		const target = event.target.closest(`.active-menu`);
+		if (!target || event.target.matches(`.active-menu a`)) {
 			menu.classList.toggle(`active-menu`);
 			btnMenu.style.display = `block`;
 			preventDocEvent = true;

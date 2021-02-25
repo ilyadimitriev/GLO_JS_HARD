@@ -91,7 +91,7 @@ startBtnActive.addEventListener(`click`, () => {
 	} else {
 		program.start();
 		reset.style.display = `block`;
-		startBtnActive.textContent = `reset`;
+		startBtnActive.textContent = `pause`;
 	}
 });
 

@@ -3,6 +3,7 @@
 
 window.addEventListener(`DOMContentLoaded`, () => {
 
+	// Таймер
 function countTimer(deadline) {
 
 	const timerHours = document.querySelector(`#timer-hours`),
@@ -44,30 +45,48 @@ function countTimer(deadline) {
 		timerSeconds.textContent = `00`;
 	}
 }
+countTimer(new Date().getTime() + 52342000);
 
-const deadline = new Date().getTime() + 52342000;
-countTimer(deadline);
+	// Плавная прокрутка
+const smoothScroll = event => {
+	event.preventDefault();
+	const target = event.target.closest(`a`),
+		destination = target.getAttribute(`href`);
+	document.querySelector(destination).scrollIntoView({
+		behavior: 'smooth',
+		block: 'start'
+	});
+};
 
+	// Управление меню
 const toggleMenu = () => {
 	const menu = document.querySelector(`menu`);
 
-	document.addEventListener(`click`, event => {
-		let target = event.target.closest(`.active-menu`);
+	const handlerMenu  = () => {
+		menu.classList.toggle(`active-menu`);
+	};
+
+	document.querySelector(`body`).addEventListener(`click`, event => {
+		let target;
 		if (menu.classList.contains(`active-menu`)) {
+			target = event.target.closest(`.active-menu`);
 			if (!target || event.target.matches(`.active-menu a`)) {
-				menu.classList.toggle(`active-menu`);
+				if (event.target.matches(`.active-menu>ul>li>a`)) {
+					smoothScroll(event);
+				}
+				handlerMenu();
 			}
 		} else {
 			target = event.target.closest(`.menu`);
 			if (target) {
-				menu.classList.toggle(`active-menu`);
+				handlerMenu();
 			}
 		}
 	});
 };
-
 toggleMenu();
 
+	// Всплывающее окно
 const togglePopUp = () => {
 	const popup = document.querySelector(`.popup`),
 		popupBtn = document.querySelectorAll(`.popup-btn`),
@@ -109,9 +128,9 @@ const togglePopUp = () => {
 		}
 	});
 };
-
 togglePopUp();
 
+	// Переключение табов Наши услуги
 const tabs = () => {
 	const tabHeader = document.querySelector(`.service-header`),
 		tab = tabHeader.querySelectorAll(`.service-header-tab`),
@@ -140,7 +159,10 @@ const tabs = () => {
 		}
 	});
 };
-
 tabs();
 
+	// Переход по кнопке в первом блоке
+document.querySelector(`main>a`).addEventListener(`click`, event => {
+	smoothScroll(event);
+});
 });

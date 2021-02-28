@@ -51,6 +51,7 @@ body {
     width: 100%;
     float: left;
     padding: 15px;
+    overflow-x: hidden;
 }
 
 .header {
@@ -136,8 +137,13 @@ body {
     position: relative;
     box-shadow: 0 1px 2px rgba(44, 62, 80, 0.10);
     margin: 0 0 10px 0;
-    padding: 14px 100px 14px 14px;
+    padding-right: 150px;
     word-break: break-word;
+}
+
+.todo-item span {
+    display: block;
+    padding: 14px;
 }
 
 .todo-item:last-of-type {
@@ -231,15 +237,52 @@ body {
     color: #aaa;
 }
 
-.alert {
-   background-color: rgb(0 0 0 / 43%);
-   transition: 300ms;
-}
+/* Анимация через JS */
 
-.alert::-webkit-input-placeholder {
-    color: red;
-}
+    /* Пустой input */
+    .alert {
+        background-color: rgb(0 0 0 / 43%);
+        transition: 300ms;
+     }
+     
+     .alert::-webkit-input-placeholder {
+         color: red;
+     }
+     
+     .alert:-ms-input-placeholder {
+         color: red;
+     }
 
-.alert:-ms-input-placeholder {
-    color: red;
-}
+    /* Удаление */
+    .animate-delete {
+        opacity: 0.2;
+        margin-left: 100vw !important;
+        transition: 300ms;
+    }
+
+    /* Выполнено */
+    @keyframes complete-fade{
+        from {
+            color: #444;
+            background-color: #ffffff;
+            opacity: 1;
+        }
+        to {
+            color: #fff;
+            background-color: #2196f3;
+            opacity: 0;
+        }
+    }
+    .animate-complete-fade_blue {
+        animation: complete-fade 300ms ease-out;
+    }
+
+    .animate-complete-fade_white {
+        animation: complete-fade 300ms ease-out;
+        animation-direction: reverse;
+    }
+    /* Редактирование */
+    .animate-todo-item_blue {
+        background-color: #7ea6c7;
+        color: #ffffff;
+    }

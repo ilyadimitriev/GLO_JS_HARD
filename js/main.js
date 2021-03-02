@@ -302,7 +302,7 @@ restrictInput();
 const checkInputData = () => {
 	const check = event => {
 		const target = event.target;
-			if (target.getAttribute(`name`).match(/^user_(name|message|email|phone)$/)) {
+			if (target.getAttribute(`name`).match(/^user_(name|message|email|phone)$/) && target.value !== ``) {
 				target.value = target.value.replace(/^(-| ){1,}|(-| ){1,}$/g, ``);
 				target.value = target.value.replace(/-{2,}/g, `-`);
 				target.value = target.value.replace(/ {2,}/g, ` `);
@@ -327,7 +327,7 @@ const checkInputData = () => {
 				});
 			}
 	};
-	const allRequiredInputs = document.querySelectorAll(`input[name="/^user_(name|message|email|phone)$/"], input[name="user_message"], input[name="user_email"], input[name="user_phone"]`);
+	const allRequiredInputs = document.querySelectorAll(`input[name="user_name"], input[name="user_message"], input[name="user_email"], input[name="user_phone"]`);
 
 	allRequiredInputs.forEach(elem => {
 		elem.addEventListener(`blur`, check);

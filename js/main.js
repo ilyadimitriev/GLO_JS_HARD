@@ -300,14 +300,15 @@ restrictInput();
 
 	// Проверка и приведение введенных данных на валидность
 const checkInputData = () => {
-	const check = event => {
-		const target = event.target;
-			if (target.getAttribute(`name`).match(/^user_(name|message|email|phone)$/) && target.value !== ``) {
+	document.addEventListener(`blur`, event => {
+		const target = event.target.closest(`input`);
+		if (target && target.value !== ``) {
+			if (target.getAttribute(`name`).match(/^user_(name|message|email|phone)$/)) {
 				target.value = target.value.replace(/^(-| ){1,}|(-| ){1,}$/g, ``);
 				target.value = target.value.replace(/-{2,}/g, `-`);
 				target.value = target.value.replace(/ {2,}/g, ` `);
 			}
-			if (target.getAttribute(`name`) === `user_name` && target.value !== ``) {
+			if (target.getAttribute(`name`) === `user_name`) {
 				// Создаем массив из отдельных слов
 				const words = target.value.match(/[^ |-]{1,}/g);
 				words.forEach((word, index) => {
@@ -326,12 +327,8 @@ const checkInputData = () => {
 					target.value = target.value.replace(regWord, word);
 				});
 			}
-	};
-	const allRequiredInputs = document.querySelectorAll(`input[name="user_name"], input[name="user_message"], input[name="user_email"], input[name="user_phone"]`);
-
-	allRequiredInputs.forEach(elem => {
-		elem.addEventListener(`blur`, check);
-	});
+		}
+	}, true);
 };
 checkInputData();
 
@@ -379,7 +376,6 @@ const calc = (price = 100) => {
 			start();
 		};
 	const countSum = () => {
-		console.log(`zhjlbkcz`);
 		let total = 0,
 			countValue = 1,
 			dayValue = 1;
@@ -396,6 +392,8 @@ const calc = (price = 100) => {
 		}
 		if (typeValue && squareValue) {
 			total = Math.round(price * typeValue * squareValue * countValue * dayValue);
+			changeSum(total);
+		} else {
 			changeSum(total);
 		}
 	};

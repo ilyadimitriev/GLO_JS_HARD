@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable indent */
 `use strict`;
 
@@ -283,14 +284,16 @@ const restrictInput = () => {
 			}
 			switch (target.getAttribute(`name`)) {
 				case `user_name`:
+					target.value = target.value.replace(/[^а-яё ]/gi, ``);
+					break;
 				case `user_message`:
-					target.value = target.value.replace(/[^а-яё -]/gi, ``);
+					target.value = target.value.replace(/[^а-яё .,!?;:'"-]/gi, ``);
 					break;
 				case `user_email`:
 					target.value = target.value.replace(/[^\w'*~!.@-]/gi, ``);
 					break;
 				case 'user_phone':
-					target.value = target.value.replace(/[^\d()-]/gi, ``);
+					target.value = target.value.replace(/[^\d+]/gi, ``);
 					break;
 			}
 		}
@@ -410,4 +413,70 @@ const calc = (price = 100) => {
 	});
 };
 calc(100);
+
+	//Отправка формы
+const sendForm = (formId, formValidator) => {
+	const errorMessage = `Что-то пошло не так...`,
+	successMessage = `Спасибо, мы скоро с Вами свяжемся!`;
+
+	const form = document.querySelector(`${formId}`);
+
+	const statusMessage = document.createElement(`div`);
+
+	form.addEventListener(`submit`, event => {
+		event.preventDefault();
+		// FormValidator описан в add-validation.js
+		if (formValidator.validate()) { // Если прошли валидацию, то:
+			form.appendChild(statusMessage);
+			statusMessage.innerHTML = `<div></div><div></div><div></div><div></div>`;
+			statusMessage.classList = `lds-ellipsis`;
+			const formData = new FormData(form);
+			const body = {};
+			formData.forEach((val, key) => {
+				body[key] = val;
+			});
+			postData(body,
+				() => {
+					statusMessage.style.cssText = `font-size: 2rem; color: #fff;`;
+					statusMessage.innerHTML = ``;
+					statusMessage.textContent = successMessage;
+					statusMessage.classList.remove(`lds-ellipsis`);
+					form.querySelectorAll(`input`).forEach(input => {
+						input.value = ``;
+					});
+				},
+				error => {
+					statusMessage.style.cssText = `font-size: 2rem;`;
+					statusMessage.innerHTML = ``;
+					statusMessage.textContent = errorMessage;
+					statusMessage.classList.remove(`lds-ellipsis`);
+					console.error(error);
+				}
+			);
+		} else { // Если не прошли валидацию, ничего не запускать
+			return;
+		}
+	});
+
+	const postData = (body, outputData, errorData) => {
+		const request = new XMLHttpRequest();
+		request.addEventListener(`readystatechange`, () => {
+			if (request.readyState !== 4) {
+				return;
+			}
+			if (request.status === 200) {
+				outputData();
+			} else {
+				errorData(request.status);
+			}
+		});
+		request.open(`POST`, `./server.php`);
+		request.setRequestHeader(`Content-Type`, `application/json`);
+		request.send(JSON.stringify(body));
+	};
+};
+// Второй аргумент - имя валидатора из add-validation.js
+sendForm(`#form1`, validMain);
+sendForm(`#form2`, validFooter);
+sendForm(`#form3`, validPopUp);
 });

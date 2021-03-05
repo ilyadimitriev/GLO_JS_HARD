@@ -11,11 +11,11 @@ const validMain = new Validator({
 		],
 		'form1-name': [
 			[`notEmpty`],
-			[`pattern`, `text`]
+			[`pattern`, `name`]
 		]
 	},
 });
-validMain.init();
+// validMain.init();
 
 const validFooter = new Validator({
 	selector: `#form2`,
@@ -30,7 +30,7 @@ const validFooter = new Validator({
 		],
 		'form2-name': [
 			[`notEmpty`],
-			[`pattern`, `text`]
+			[`pattern`, `name`]
 		],
 		'form2-message': [
 			[`notEmpty`],
@@ -38,7 +38,7 @@ const validFooter = new Validator({
 		]
 	},
 });
-validFooter.init();
+// validFooter.init();
 
 const validPopUp = new Validator({
 	selector: `#form3`,
@@ -53,8 +53,8 @@ const validPopUp = new Validator({
 		],
 		'form3-name': [
 			[`notEmpty`],
-			[`pattern`, `text`]
+			[`pattern`, `name`]
 		]
 	},
 });
-validPopUp.init();
+// validPopUp.init();
